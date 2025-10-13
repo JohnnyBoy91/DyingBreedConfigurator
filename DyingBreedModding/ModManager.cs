@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Unity.IL2CPP;
+using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using ScriptableObjects;
@@ -11,10 +12,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
-using static JCDyingBreedConfigurator.Utilities;
-using HarmonyLib;
 using UnityEngine.SceneManagement;
 using UniverseLib;
+using static Il2CppSystem.Globalization.CultureInfo;
+using static JCDyingBreedConfigurator.Utilities;
 
 namespace JCDyingBreedConfigurator
 {
@@ -71,6 +72,7 @@ namespace JCDyingBreedConfigurator
             private bool verboseLogging = false; 
             public static bool VerboseLogging() => Instance.verboseLogging;
 
+            public List<UnitSoData> unitSODataList = new List<UnitSoData>();
 
             public string dataConfigPath;
             public string modSettingsPath;
@@ -125,16 +127,63 @@ namespace JCDyingBreedConfigurator
             internal void MainSetup()
             {
                 if (dataInjected) return;
+
                 foreach (var unitData in RuntimeHelper.FindObjectsOfTypeAll<UnitScriptableObject>())
                 {
                     foreach (var unitDataB in unitData.unitData)
                     {
                         Log(CombineStrings('"'.ToString(), unitDataB.displayName, '"'.ToString(), ","));
-                        unitDataB.Health = 8000;
-                        unitDataB.speed = 20;
+                        unitSODataList.Add(unitDataB);
+                        //unitDataB.Health = 8000;
+                        //unitDataB.speed = 20;
+                        //unitDataB.prodCost = 50;
                     }
                     //if (LocManager.legalUnitNames.Contains(unitData.name)) unitDataList.Add(unitData);
                     //if (unitData.name == "Bear" || unitData.name == "BearSlayer") unitDataList.Add(unitData);
+                }
+                List<UnitDataBlueprint> blueprints = new List<UnitDataBlueprint>();
+                foreach (var item in unitSODataList)
+                {
+                    UnitDataBlueprint data = new UnitDataBlueprint();
+                    data.key = item.displayName;
+                    data.Health = item.Health;
+                    data.MinAttackDamage = item.MinAttackDamage;
+                    data.MaxAttackDamage = item.MaxAttackDamage;
+                    data.speed = item.speed;
+                    data.prodCost = item.prodCost;
+                    data.AttackSpeed = item.AttackSpeed;
+                    data.AttackSpread = item.AttackSpread;
+                    data.AttackRate = item.AttackRate;
+                    data.AttackRange = item.AttackRange;
+                    data.faction = item.faction;
+                    data.ArmorClass = item.ArmorClass;
+                    data.AttackDamageType = item.AttackDamageType;
+                    blueprints.Add(data);
+                }
+
+                WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultUnitData.json"), blueprints);
+
+                List<UnitDataBlueprint> blueprintsB = (List<UnitDataBlueprint>)ReadJsonConfig<List<UnitDataBlueprint>>(CombineStrings(modRootPath, "ModUnitData.json"));
+                foreach (var item in blueprintsB)
+                {
+                    var unitToMod = unitSODataList.Where(x => x.displayName == item.key && x.faction == item.faction).FirstOrDefault();
+                    if (unitToMod != null)
+                    {
+                        Log(CombineStrings("Modding ", unitToMod.displayName));
+                        Log(CombineStrings("item.Health ", item.Health.ToString()));
+                        unitToMod.Health = item.Health;
+                        unitToMod.MinAttackDamage = item.MinAttackDamage;
+                        unitToMod.MaxAttackDamage = item.MaxAttackDamage;
+                        unitToMod.speed = item.speed;
+                        unitToMod.prodCost = item.prodCost;
+                        unitToMod.AttackSpeed = item.AttackSpeed;
+                        unitToMod.AttackSpread = item.AttackSpread;
+                        unitToMod.AttackRate = item.AttackRate;
+                        unitToMod.AttackRange = item.AttackRange;
+                        //unitToMod.faction = item.faction;
+                        unitToMod.ArmorClass = item.ArmorClass;
+                        unitToMod.AttackDamageType = item.AttackDamageType;
+                    }
                 }
                 dataInjected = true;
             }
