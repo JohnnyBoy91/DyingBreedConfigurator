@@ -1,0 +1,442 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AssemblyName>DyingBreedConfigurator</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="AsmResolver">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\AsmResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="AsmResolver.DotNet">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\AsmResolver.DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="AsmResolver.PE">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\AsmResolver.PE.dll</HintPath>
+    </Reference>
+    <Reference Include="AsmResolver.PE.File">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\AsmResolver.PE.File.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="AssetRipper.CIL">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\AssetRipper.CIL.dll</HintPath>
+    </Reference>
+    <Reference Include="AssetRipper.Primitives">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\AssetRipper.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="AstarPathfindingProject">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\AstarPathfindingProject.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Core">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\BepInEx.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Preloader.Core">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\BepInEx.Preloader.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Unity.Common">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\BepInEx.Unity.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Unity.IL2CPP">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
+    </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Cinemachine.dll</HintPath>
+    </Reference>
+    <Reference Include="clipper_library">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\clipper_library.dll</HintPath>
+    </Reference>
+    <Reference Include="Cpp2IL.Core">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Cpp2IL.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DesignPattern">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DesignPattern.dll</HintPath>
+    </Reference>
+    <Reference Include="Disarm">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Disarm.dll</HintPath>
+    </Reference>
+    <Reference Include="Drawing">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DyingBreed">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DyingBreed.dll</HintPath>
+    </Reference>
+    <Reference Include="DyingBreed-Data_Assembly">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DyingBreed-Data_Assembly.dll</HintPath>
+    </Reference>
+    <Reference Include="DyingBreed-PropertyAttributes">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DyingBreed-PropertyAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="DyingBreed-UI-Pages">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DyingBreed-UI-Pages.dll</HintPath>
+    </Reference>
+    <Reference Include="DyingBreed-Variables_Save">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DyingBreed-Variables_Save.dll</HintPath>
+    </Reference>
+    <Reference Include="DyingBreed.Common">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\DyingBreed.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Gee.External.Capstone">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Gee.External.Capstone.dll</HintPath>
+    </Reference>
+    <Reference Include="Helpers">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Iced">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Iced.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Common">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Il2CppInterop.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Generator">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Il2CppInterop.Generator.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.HarmonySupport">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Il2CppInterop.HarmonySupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Il2CppInterop.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppMono.Security">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppMono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Configuration">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Core">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Data">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Drawing">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Numerics">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Runtime.Serialization">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Xml">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppSystem.Xml.Linq">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Il2CppSystem.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="LibCpp2IL">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\LibCpp2IL.dll</HintPath>
+    </Reference>
+    <Reference Include="Messenger_Assembly">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Messenger_Assembly.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Backports">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\MonoMod.Backports.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.ILHelpers">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\MonoMod.ILHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PackageTools">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\PackageTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.ClipperLib">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Pathfinding.ClipperLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Ionic.Zip.Reduced">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Poly2Tri">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Pathfinding.Poly2Tri.dll</HintPath>
+    </Reference>
+    <Reference Include="SemanticVersioning">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\SemanticVersioning.dll</HintPath>
+    </Reference>
+    <Reference Include="Serialized_GameObject">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Serialized_GameObject.dll</HintPath>
+    </Reference>
+    <Reference Include="StableNameDotNet">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\StableNameDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SuperTiled2Unity">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\SuperTiled2Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Burst.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Collections">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Localization">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.AndroidJNIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.DSPGraphModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GIModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.GIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.SubsystemsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreTextEngineModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsNativeModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UIElementsNativeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityCurlModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityCurlModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VirtualTexturingModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.VirtualTexturingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UniverseLib.IL2CPP.Interop">
+      <HintPath>libs\UniverseLib.IL2CPP.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="WasmDisassembler">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\core\WasmDisassembler.dll</HintPath>
+    </Reference>
+    <Reference Include="__Generated">
+      <HintPath>J:\SteamLibrary\steamapps\common\Dying Breed\BepInEx\interop\__Generated.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
