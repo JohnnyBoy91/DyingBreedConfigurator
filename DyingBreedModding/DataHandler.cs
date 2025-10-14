@@ -29,10 +29,10 @@ namespace JCDyingBreedConfigurator
         public float AttackRate;
         public float AttackRange;
         public int prodCost;
-        public DyingBreed.Enums.Faction faction;
-        public DyingBreed.Enums.ArmorClass ArmorClass;
-        public DyingBreed.Enums.AttackDamageType AttackDamageType;
-
+        public int prodTimeCost;
+        public string faction_DONTCHANGETHIS = "";
+        public string ArmorClass = "Unarmored";
+        public string AttackDamageType = "Bullet";
     }
 
     #endregion

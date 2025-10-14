@@ -21,45 +21,6 @@ namespace JCDyingBreedConfigurator
             return sb.ToString();
         }
 
-        public static float GetFloatByKey(float originalFloat, string key)
-        {
-            if (float.TryParse(GetValue(key), out float outVal))
-            {
-                return outVal;
-            }
-            else
-            {
-                if (VerboseLogging()) Log(CombineStrings("Failed to parse Float: ", key, dlmKey, originalFloat.ToString()));
-                return originalFloat;
-            }
-        }
-
-        public static int GetIntByKey(int originalInt, string key)
-        {
-            if (int.TryParse(GetValue(key), out int outVal))
-            {
-                return outVal;
-            }
-            else
-            {
-                if (VerboseLogging()) Log(CombineStrings("Failed to parse Int: ", key, dlmKey, originalInt.ToString()));
-                return originalInt;
-            }
-        }
-
-        public static bool GetBoolByKey(bool originalBool, string key)
-        {
-            if (bool.TryParse(GetValue(key), out bool boolVal))
-            {
-                return boolVal;
-            }
-            else
-            {
-                if (VerboseLogging()) Log(CombineStrings("Failed to parse Bool: ", key, dlmKey, originalBool.ToString()));
-                return originalBool;
-            }
-        }
-
         public static void TryMethod(Action method)
         {
             try
