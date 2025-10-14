@@ -121,15 +121,33 @@ namespace JCDyingBreedConfigurator
                 initialized = true;
             }
 
+            private void GetAllDefaultData()
+            {
+                GetDefaultUnitData();
+                GetDefaultBuildingData();
+            }
+
+            private void ModAllData()
+            {
+                ModUnitData();
+                ModBuildingData();
+            }
+
             internal void ModifyStats()
             {
-                if (dataInjected) return;
+                if (dataInjected) return; //no point in doing this twice now, maybe support hotloading json changes at runtime in future?
+                GetAllDefaultData();
+                ModAllData();
+                dataInjected = true;
+            }
 
+            private void GetDefaultUnitData()
+            {
                 foreach (var unitData in RuntimeHelper.FindObjectsOfTypeAll<UnitScriptableObject>())
                 {
                     foreach (var unitDataB in unitData.unitData)
                     {
-                        Log(CombineStrings('"'.ToString(), unitDataB.displayName, '"'.ToString(), ","));
+                        Log(CombineStrings('"'.ToString(), unitDataB.displayName, '"'.ToString(), ",", unitDataB.faction.ToString()));
                         unitSODataList.Add(unitDataB);
                     }
                 }
@@ -157,11 +175,16 @@ namespace JCDyingBreedConfigurator
                     unitDataBlueprints.Add(data);
                 }
 
+                WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultUnitData.json"), unitDataBlueprints);
+            }
+
+            private void GetDefaultBuildingData()
+            {
                 foreach (var buildingData in RuntimeHelper.FindObjectsOfTypeAll<BuildingScriptableObject>())
                 {
                     foreach (var buildingDataB in buildingData.unitData)
                     {
-                        Log(CombineStrings('"'.ToString(), buildingDataB.displayName, '"'.ToString(), ","));
+                        Log(CombineStrings('"'.ToString(), buildingDataB.displayName, '"'.ToString(), ",", buildingDataB.faction.ToString()));
                         buildingSODataList.Add(buildingDataB);
                     }
                 }
@@ -198,8 +221,10 @@ namespace JCDyingBreedConfigurator
                 }
 
                 WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultBuildingData.json"), buildingDataBlueprints);
-                WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultUnitData.json"), unitDataBlueprints);
+            }
 
+            private void ModUnitData()
+            {
                 List<UnitDataBlueprint> moddedUnitData = (List<UnitDataBlueprint>)ReadJsonConfig<List<UnitDataBlueprint>>(unitDataConfigPath);
                 foreach (var ModdedData in moddedUnitData)
                 {
@@ -233,11 +258,14 @@ namespace JCDyingBreedConfigurator
                         unitToMod.AttackRate = ModdedData.AttackRate;
                         unitToMod.AttackRange = ModdedData.AttackRange;
                         unitToMod.DetectionRange = ModdedData.detectionRange;
-                        unitToMod.ArmorClass = (DyingBreed.Enums.ArmorClass) Enum.Parse(typeof(DyingBreed.Enums.ArmorClass), ModdedData.ArmorClass);
+                        unitToMod.ArmorClass = (DyingBreed.Enums.ArmorClass)Enum.Parse(typeof(DyingBreed.Enums.ArmorClass), ModdedData.ArmorClass);
                         unitToMod.AttackDamageType = (DyingBreed.Enums.AttackDamageType)Enum.Parse(typeof(DyingBreed.Enums.AttackDamageType), ModdedData.AttackDamageType);
                     }
                 }
+            }
 
+            private void ModBuildingData()
+            {
                 List<BuildingDataBlueprint> moddedBuildingData = (List<BuildingDataBlueprint>)ReadJsonConfig<List<BuildingDataBlueprint>>(buildingDataConfigPath);
                 foreach (var ModdedData in moddedBuildingData)
                 {
@@ -280,10 +308,9 @@ namespace JCDyingBreedConfigurator
                         buildingToMod.constructionGridOffset = ModdedData.constructionGridOffset;
                     }
                 }
-
-                dataInjected = true;
             }
 
+            #region utilities
             public static void Log(string logString, int level = 1)
             {
                 if (level == 1)
@@ -299,6 +326,7 @@ namespace JCDyingBreedConfigurator
                     Instance.plugin.Log.LogError(logString);
                 }
             }
+            #endregion
         }
 
     }
