@@ -17,16 +17,17 @@ using static JCDyingBreedConfigurator.Utilities;
 
 namespace JCDyingBreedConfigurator
 {
-    [BepInPlugin("JCDyingBreedConfigurator", "DyingBreedConfigurator", "1.0.0")]
+    [BepInPlugin("JCDyingBreedConfigurator", "DyingBreedConfigurator", modVersion)]
     public class Plugin : BasePlugin
     {
         #region Plugin Core
+        public const string modVersion = "1.0.0";
         public GameObject DyingBreedMainModObject;
-        // Plugin startup logic
         public override void Load()
         {
-            Log.LogInfo("Plugin JCDyingBreedConfigurator is loaded!");
+            Log.LogInfo("Plugin JCDyingBreedConfigurator " + modVersion + " is loaded!");
             ClassInjector.RegisterTypeInIl2Cpp<ModManager>();
+
             if (DyingBreedMainModObject == null)
             {
                 DyingBreedMainModObject = new GameObject("DyingBreedConfiguratorMaster");
@@ -70,19 +71,14 @@ namespace JCDyingBreedConfigurator
 
             public List<UnitSoData> unitSODataList = new List<UnitSoData>();
             public List<BuildingSoData> buildingSODataList = new List<BuildingSoData>();
+            public DamageTable damageTable = new DamageTable();
 
             public string unitDataConfigPath => modRootPath + "ModUnitData.json";
             public string buildingDataConfigPath => modRootPath + "ModBuildingData.json";
+            public string damageTableDataConfigPath => modRootPath + "ModDamageTableData.json";
             public string modSettingsPath => modRootPath + "ModSettings.json";
             public string modRootPath => Directory.GetCurrentDirectory() + @"\BepInEx\plugins\DyingBreedConfigurator\";
             public const string generatedConfigFolderPath = @"DefaultConfigData\";
-
-            //config delimiters
-            public const string dlmList = ", ";
-            public const string dlmWord = "_";
-            public const string dlmKey = ":";
-            public const string dlmComment = "//";
-            public const string dlmNewLine = "\n";
 
             public static ModManager Instance
             {
@@ -104,19 +100,18 @@ namespace JCDyingBreedConfigurator
                     InitializeMod();
                 }
 
-                if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyUp(KeyCode.F10))
-                {
-                    Instance.plugin.Log.LogInfo("SendDevCMD");
-                    ModifyStats();
-                }
+                //for my testing
+                //if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyUp(KeyCode.F10))
+                //{
+                //    Log("SendDevCMD", 2);
+                //    ModifyStats();
+                //}
             }
 
             private void InitializeMod()
             {
-                Instance.plugin.Log.LogInfo("confining cursor");
-                //Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                Log("confining cursor");
                 Cursor.lockState = CursorLockMode.Confined;
-
                 if (!Directory.Exists(modRootPath + generatedConfigFolderPath)) Directory.CreateDirectory(modRootPath + generatedConfigFolderPath);
                 initialized = true;
             }
@@ -125,12 +120,14 @@ namespace JCDyingBreedConfigurator
             {
                 GetDefaultUnitData();
                 GetDefaultBuildingData();
+                GetDefaultDamageTableData();
             }
 
             private void ModAllData()
             {
-                ModUnitData();
-                ModBuildingData();
+                TryMethod(ModUnitData);
+                TryMethod(ModBuildingData);
+                TryMethod(ModDamageTableData);
             }
 
             internal void ModifyStats()
@@ -212,7 +209,6 @@ namespace JCDyingBreedConfigurator
                     data.sellPrice = buildingSODataFromGame.sellPrice;
                     data.healthRepairInterval = buildingSODataFromGame.healthRepairInterval;
                     data.repairCostInterval = buildingSODataFromGame.repairCostInterval;
-                    data.constructionGridOffset = buildingSODataFromGame.constructionGridOffset;
                     //foreach (var unit in buildingSODataFromGame.unitSpawnWhenDestroyed)
                     //{
                     //    data.unitSpawnWhenDestroyed.Add(unit.name);
@@ -221,6 +217,24 @@ namespace JCDyingBreedConfigurator
                 }
 
                 WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultBuildingData.json"), buildingDataBlueprints);
+            }
+
+            private void GetDefaultDamageTableData()
+            {
+                damageTable = RuntimeHelper.FindObjectsOfTypeAll<DamageTable>().FirstOrDefault();
+                DamageTableBluePrint damageTableB = new DamageTableBluePrint();
+                damageTableB.key = "DamageTable";
+                for (int i = 0; i < DamageTable.NumAttackTypes; i++)
+                {
+                    string attackType = ((DyingBreed.Enums.AttackDamageType)i).ToString();
+                    damageTableB.attackTypeDamageModifier.Add(attackType, new Dictionary<string, float>());
+                    for (int j = 0; j < DamageTable.NumArmorClasses; j++)
+                    {
+                        string armorType = ((DyingBreed.Enums.ArmorClass)j).ToString();
+                        damageTableB.attackTypeDamageModifier[attackType][armorType] = damageTable.Damage[i * DamageTable.NumArmorClasses + j];
+                    }
+                }
+                WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultDamageTableData.json"), damageTableB);
             }
 
             private void ModUnitData()
@@ -273,7 +287,6 @@ namespace JCDyingBreedConfigurator
                     if (buildingToMod != null)
                     {
                         Log(CombineStrings("Modding ", buildingToMod.displayName));
-                        //Log(CombineStrings("item.Health ", ModdedData.Health.ToString()));
                         buildingToMod.Health = ModdedData.Health;
                         buildingToMod.MinAttackDamage = ModdedData.MinAttackDamage;
                         buildingToMod.MaxAttackDamage = ModdedData.MaxAttackDamage;
@@ -305,7 +318,20 @@ namespace JCDyingBreedConfigurator
                         buildingToMod.sellPrice = ModdedData.sellPrice;
                         buildingToMod.repairCostInterval = ModdedData.repairCostInterval;
                         buildingToMod.healthRepairInterval = ModdedData.healthRepairInterval;
-                        buildingToMod.constructionGridOffset = ModdedData.constructionGridOffset;
+                    }
+                }
+            }
+
+            private void ModDamageTableData()
+            {
+                DamageTableBluePrint moddedDamageTable = (DamageTableBluePrint)ReadJsonConfig<DamageTableBluePrint>(damageTableDataConfigPath);
+                for (int i = 0; i < DamageTable.NumAttackTypes; i++)
+                {
+                    string attackType = ((DyingBreed.Enums.AttackDamageType)i).ToString();
+                    for (int j = 0; j < DamageTable.NumArmorClasses; j++)
+                    {
+                        string armorType = ((DyingBreed.Enums.ArmorClass)j).ToString();
+                        damageTable.Damage[i * DamageTable.NumArmorClasses + j] = moddedDamageTable.attackTypeDamageModifier[attackType][armorType];
                     }
                 }
             }

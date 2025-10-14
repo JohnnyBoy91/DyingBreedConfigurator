@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace JCDyingBreedConfigurator
@@ -54,8 +55,14 @@ namespace JCDyingBreedConfigurator
         public int sellPrice;
         public float healthRepairInterval;
         public int repairCostInterval;
-        public int constructionGridOffset;
         //public List<string> unitSpawnWhenDestroyed = new List<string>();
+    }
+
+    [Serializable]
+    public class DamageTableBluePrint
+    {
+        public string key;
+        public Dictionary<string, Dictionary<string, float>> attackTypeDamageModifier = new Dictionary<string, Dictionary<string, float>>();
     }
 
     #endregion
