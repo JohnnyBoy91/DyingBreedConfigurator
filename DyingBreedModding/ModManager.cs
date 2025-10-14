@@ -72,6 +72,7 @@ namespace JCDyingBreedConfigurator
             public List<BuildingSoData> buildingSODataList = new List<BuildingSoData>();
 
             public string unitDataConfigPath => modRootPath + "ModUnitData.json";
+            public string buildingDataConfigPath => modRootPath + "ModBuildingData.json";
             public string modSettingsPath => modRootPath + "ModSettings.json";
             public string modRootPath => Directory.GetCurrentDirectory() + @"\BepInEx\plugins\DyingBreedConfigurator\";
             public const string generatedConfigFolderPath = @"DefaultConfigData\";
@@ -149,6 +150,7 @@ namespace JCDyingBreedConfigurator
                     data.AttackSpread = unitSODataFromGame.AttackSpread;
                     data.AttackRate = unitSODataFromGame.AttackRate;
                     data.AttackRange = unitSODataFromGame.AttackRange;
+                    data.detectionRange = unitSODataFromGame.DetectionRange;
                     data.faction_DONTCHANGETHIS = unitSODataFromGame.faction.ToString();
                     data.ArmorClass = unitSODataFromGame.ArmorClass.ToString();
                     data.AttackDamageType = unitSODataFromGame.AttackDamageType.ToString();
@@ -164,6 +166,38 @@ namespace JCDyingBreedConfigurator
                     }
                 }
 
+                List<BuildingDataBlueprint> buildingDataBlueprints = new List<BuildingDataBlueprint>();
+                foreach (var buildingSODataFromGame in buildingSODataList)
+                {
+                    BuildingDataBlueprint data = new BuildingDataBlueprint();
+                    data.key = buildingSODataFromGame.displayName;
+                    data.Health = buildingSODataFromGame.Health;
+                    data.MinAttackDamage = buildingSODataFromGame.MinAttackDamage;
+                    data.MaxAttackDamage = buildingSODataFromGame.MaxAttackDamage;
+                    data.prodCost = buildingSODataFromGame.prodCost;
+                    data.prodTimeCost = buildingSODataFromGame.prodIntervalCount[0];
+                    data.FogDiscoveryOuter = buildingSODataFromGame.FogDiscoveryOuter;
+                    data.AttackSpeed = buildingSODataFromGame.AttackSpeed;
+                    data.AttackSpread = buildingSODataFromGame.AttackSpread;
+                    data.AttackRate = buildingSODataFromGame.AttackRate;
+                    data.AttackRange = buildingSODataFromGame.AttackRange;
+                    data.detectionRange = buildingSODataFromGame.DetectionRange;
+                    data.faction_DONTCHANGETHIS = buildingSODataFromGame.faction.ToString();
+                    data.ArmorClass = buildingSODataFromGame.ArmorClass.ToString();
+                    data.AttackDamageType = buildingSODataFromGame.AttackDamageType.ToString();
+                    data.power = buildingSODataFromGame.power;
+                    data.sellPrice = buildingSODataFromGame.sellPrice;
+                    data.healthRepairInterval = buildingSODataFromGame.healthRepairInterval;
+                    data.repairCostInterval = buildingSODataFromGame.repairCostInterval;
+                    data.constructionGridOffset = buildingSODataFromGame.constructionGridOffset;
+                    //foreach (var unit in buildingSODataFromGame.unitSpawnWhenDestroyed)
+                    //{
+                    //    data.unitSpawnWhenDestroyed.Add(unit.name);
+                    //}
+                    buildingDataBlueprints.Add(data);
+                }
+
+                WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultBuildingData.json"), buildingDataBlueprints);
                 WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultUnitData.json"), unitDataBlueprints);
 
                 List<UnitDataBlueprint> moddedUnitData = (List<UnitDataBlueprint>)ReadJsonConfig<List<UnitDataBlueprint>>(unitDataConfigPath);
@@ -172,7 +206,7 @@ namespace JCDyingBreedConfigurator
                     var unitToMod = unitSODataList.Where(x => x.displayName == ModdedData.key && x.faction.ToString() == ModdedData.faction_DONTCHANGETHIS).FirstOrDefault();
                     if (unitToMod != null)
                     {
-                        //Log(CombineStrings("Modding ", unitToMod.displayName));
+                        Log(CombineStrings("Modding ", unitToMod.displayName));
                         //Log(CombineStrings("item.Health ", ModdedData.Health.ToString()));
                         unitToMod.Health = ModdedData.Health;
                         unitToMod.MinAttackDamage = ModdedData.MinAttackDamage;
@@ -198,10 +232,55 @@ namespace JCDyingBreedConfigurator
                         unitToMod.AttackSpread = ModdedData.AttackSpread;
                         unitToMod.AttackRate = ModdedData.AttackRate;
                         unitToMod.AttackRange = ModdedData.AttackRange;
+                        unitToMod.DetectionRange = ModdedData.detectionRange;
                         unitToMod.ArmorClass = (DyingBreed.Enums.ArmorClass) Enum.Parse(typeof(DyingBreed.Enums.ArmorClass), ModdedData.ArmorClass);
                         unitToMod.AttackDamageType = (DyingBreed.Enums.AttackDamageType)Enum.Parse(typeof(DyingBreed.Enums.AttackDamageType), ModdedData.AttackDamageType);
                     }
                 }
+
+                List<BuildingDataBlueprint> moddedBuildingData = (List<BuildingDataBlueprint>)ReadJsonConfig<List<BuildingDataBlueprint>>(buildingDataConfigPath);
+                foreach (var ModdedData in moddedBuildingData)
+                {
+                    var buildingToMod = buildingSODataList.Where(x => x.displayName == ModdedData.key && x.faction.ToString() == ModdedData.faction_DONTCHANGETHIS).FirstOrDefault();
+                    if (buildingToMod != null)
+                    {
+                        Log(CombineStrings("Modding ", buildingToMod.displayName));
+                        //Log(CombineStrings("item.Health ", ModdedData.Health.ToString()));
+                        buildingToMod.Health = ModdedData.Health;
+                        buildingToMod.MinAttackDamage = ModdedData.MinAttackDamage;
+                        buildingToMod.MaxAttackDamage = ModdedData.MaxAttackDamage;
+                        buildingToMod.prodCost = ModdedData.prodCost;
+                        //dynamic income/tick/cost calculation
+                        for (int i = 0; i < buildingToMod.prodIntervalCount.Count; i++)
+                        {
+                            if (ModdedData.prodTimeCost == 0) break; //we don't want to destroy the universe
+                            buildingToMod.prodIntervalCount[i] = ModdedData.prodTimeCost; //base ticks
+                            buildingToMod.prodIntervalCost[i] = ModdedData.prodCost / ModdedData.prodTimeCost; //calculate tick cost
+                            if (i > 0)
+                            {
+                                for (int j = 0; j < i; j++)
+                                {
+                                    buildingToMod.prodIntervalCount[i] = (int)(buildingToMod.prodIntervalCount[i] * 0.8f); //each factory applies 20% reduction: 100, 80, 64, 51, 41
+                                    buildingToMod.prodIntervalCost[i] = Mathf.CeilToInt(buildingToMod.prodIntervalCost[i] * 1.25f);
+                                }
+                            }
+                        }
+                        buildingToMod.FogDiscoveryOuter = ModdedData.FogDiscoveryOuter;
+                        buildingToMod.AttackSpeed = ModdedData.AttackSpeed;
+                        buildingToMod.AttackSpread = ModdedData.AttackSpread;
+                        buildingToMod.AttackRate = ModdedData.AttackRate;
+                        buildingToMod.AttackRange = ModdedData.AttackRange;
+                        buildingToMod.DetectionRange = ModdedData.detectionRange;
+                        buildingToMod.ArmorClass = (DyingBreed.Enums.ArmorClass)Enum.Parse(typeof(DyingBreed.Enums.ArmorClass), ModdedData.ArmorClass);
+                        buildingToMod.AttackDamageType = (DyingBreed.Enums.AttackDamageType)Enum.Parse(typeof(DyingBreed.Enums.AttackDamageType), ModdedData.AttackDamageType);
+                        buildingToMod.power = ModdedData.power;
+                        buildingToMod.sellPrice = ModdedData.sellPrice;
+                        buildingToMod.repairCostInterval = ModdedData.repairCostInterval;
+                        buildingToMod.healthRepairInterval = ModdedData.healthRepairInterval;
+                        buildingToMod.constructionGridOffset = ModdedData.constructionGridOffset;
+                    }
+                }
+
                 dataInjected = true;
             }
 
