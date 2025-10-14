@@ -62,8 +62,6 @@ namespace JCDyingBreedConfigurator
         public class ModManager : MonoBehaviour
         {
             private static ModManager instance;
-            public string[] datalines;
-            public string[] settingslines;
             public Plugin plugin;
             private bool initialized;
             private bool dataInjected;
@@ -134,6 +132,7 @@ namespace JCDyingBreedConfigurator
                         unitSODataList.Add(unitDataB);
                     }
                 }
+
                 List<UnitDataBlueprint> unitDataBlueprints = new List<UnitDataBlueprint>();
                 foreach (var unitSODataFromGame in unitSODataList)
                 {
@@ -145,6 +144,7 @@ namespace JCDyingBreedConfigurator
                     data.speed = unitSODataFromGame.speed;
                     data.prodCost = unitSODataFromGame.prodCost;
                     data.prodTimeCost = unitSODataFromGame.prodIntervalCount[0];
+                    data.FogDiscoveryOuter = unitSODataFromGame.FogDiscoveryOuter;
                     data.AttackSpeed = unitSODataFromGame.AttackSpeed;
                     data.AttackSpread = unitSODataFromGame.AttackSpread;
                     data.AttackRate = unitSODataFromGame.AttackRate;
@@ -153,6 +153,15 @@ namespace JCDyingBreedConfigurator
                     data.ArmorClass = unitSODataFromGame.ArmorClass.ToString();
                     data.AttackDamageType = unitSODataFromGame.AttackDamageType.ToString();
                     unitDataBlueprints.Add(data);
+                }
+
+                foreach (var buildingData in RuntimeHelper.FindObjectsOfTypeAll<BuildingScriptableObject>())
+                {
+                    foreach (var buildingDataB in buildingData.unitData)
+                    {
+                        Log(CombineStrings('"'.ToString(), buildingDataB.displayName, '"'.ToString(), ","));
+                        buildingSODataList.Add(buildingDataB);
+                    }
                 }
 
                 WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultUnitData.json"), unitDataBlueprints);
@@ -184,6 +193,7 @@ namespace JCDyingBreedConfigurator
                                 }
                             }
                         }
+                        unitToMod.FogDiscoveryOuter = ModdedData.FogDiscoveryOuter;
                         unitToMod.AttackSpeed = ModdedData.AttackSpeed;
                         unitToMod.AttackSpread = ModdedData.AttackSpread;
                         unitToMod.AttackRate = ModdedData.AttackRate;

@@ -21,6 +21,9 @@ namespace JCDyingBreedConfigurator
     {
         public string key;
         public int Health;
+        //public bool autoRepair;
+        //public int autoRepairRange;
+        //public int autoRepairTime;
         public float speed;
         public int MinAttackDamage;
         public int MaxAttackDamage;
@@ -28,6 +31,7 @@ namespace JCDyingBreedConfigurator
         public float AttackSpread;
         public float AttackRate;
         public float AttackRange;
+        public float FogDiscoveryOuter;
         public int prodCost;
         public int prodTimeCost;
         public string faction_DONTCHANGETHIS = "";
