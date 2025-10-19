@@ -3,6 +3,8 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppInterop.Runtime.Runtime;
+using Pathfinding;
 using ScriptableObjects;
 using System;
 using System.Collections;
@@ -58,6 +60,21 @@ namespace JCDyingBreedConfigurator
                 ModManager.Instance.ModifyStats();
             }
         }
+
+        [HarmonyPatch(typeof(Harvester_Logic), "Awake")]
+        static class ModMovement
+        {
+            [HarmonyPriority(100)]
+            private static void Postfix(Harvester_Logic __instance)
+            {
+                ModManager.Log("Harvester_Logic_Patched");
+                ModManager.Instance.GetEconomyData(__instance);
+                ModManager.Instance.LoadModdedEconomyData();
+                __instance.m_Max_Amount_Resource = ModManager.Instance.moddedEconomyData.harvesterCapacity;
+                __instance.m_Max_Amount_Harvest = ModManager.Instance.moddedEconomyData.harvesterGatherQuantityPerInterval;
+                __instance.m_Harvesting_Time = ModManager.Instance.moddedEconomyData.harvesterGatherTimePerInterval;
+            }
+        }
         #endregion
 
         public class ModManager : MonoBehaviour
@@ -72,13 +89,19 @@ namespace JCDyingBreedConfigurator
             public List<UnitSoData> unitSODataList = new List<UnitSoData>();
             public List<BuildingSoData> buildingSODataList = new List<BuildingSoData>();
             public DamageTable damageTable = new DamageTable();
+            public EconomyDataBlueprint gameEconomyData = new EconomyDataBlueprint();
+            private bool checkedEconomyData;
+
+            public EconomyDataBlueprint moddedEconomyData;
 
             public string unitDataConfigPath => modRootPath + "ModUnitData.json";
             public string buildingDataConfigPath => modRootPath + "ModBuildingData.json";
             public string damageTableDataConfigPath => modRootPath + "ModDamageTableData.json";
+            public string economyConfigPath => modRootPath + "ModEconomyData.json";
             public string modSettingsPath => modRootPath + "ModSettings.json";
             public string modRootPath => Directory.GetCurrentDirectory() + @"\BepInEx\plugins\DyingBreedConfigurator\";
             public const string generatedConfigFolderPath = @"DefaultConfigData\";
+            public const string convertedConfigFolderPath = @"ConvertedConfigData\";
 
             public static ModManager Instance
             {
@@ -138,6 +161,22 @@ namespace JCDyingBreedConfigurator
                 dataInjected = true;
             }
 
+            internal void LoadModdedEconomyData()
+            {
+                if (moddedEconomyData != null) return;
+                moddedEconomyData = (EconomyDataBlueprint)ReadJsonConfig<EconomyDataBlueprint>(economyConfigPath);
+            }
+
+            internal void GetEconomyData(Harvester_Logic harvester)
+            {
+                if (checkedEconomyData) return;
+                gameEconomyData.harvesterCapacity = harvester.m_Max_Amount_Resource;
+                gameEconomyData.harvesterGatherQuantityPerInterval = harvester.m_Max_Amount_Harvest;
+                gameEconomyData.harvesterGatherTimePerInterval = harvester.m_Harvesting_Time;
+                WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultEconomyData.json"), gameEconomyData);
+                checkedEconomyData = true;
+            }
+
             private void GetDefaultUnitData()
             {
                 foreach (var unitData in RuntimeHelper.FindObjectsOfTypeAll<UnitScriptableObject>())
@@ -174,6 +213,7 @@ namespace JCDyingBreedConfigurator
 
                 WriteJsonConfig(CombineStrings(modRootPath, generatedConfigFolderPath, "DefaultUnitData.json"), unitDataBlueprints);
             }
+
 
             private void GetDefaultBuildingData()
             {

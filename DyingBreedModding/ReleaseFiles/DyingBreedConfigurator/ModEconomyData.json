@@ -1,0 +1,5 @@
+{
+  "harvesterGatherQuantityPerInterval": 50,
+  "harvesterGatherTimePerInterval": 3,
+  "harvesterCapacity": 700
+}

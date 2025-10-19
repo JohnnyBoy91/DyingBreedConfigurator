@@ -65,5 +65,13 @@ namespace JCDyingBreedConfigurator
         public Dictionary<string, Dictionary<string, float>> attackTypeDamageModifier = new Dictionary<string, Dictionary<string, float>>();
     }
 
+    [Serializable]
+    public class EconomyDataBlueprint
+    {
+        public int harvesterGatherQuantityPerInterval = 50;
+        public float harvesterGatherTimePerInterval = 3f;
+        public int harvesterCapacity = 700;
+    }
+
     #endregion
 }
