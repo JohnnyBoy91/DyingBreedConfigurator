@@ -4,7 +4,7 @@ A mod for customizing Dying Breed to your liking
 
 * Customizable unit and structure stats
 * Customizable attack-armor damage modifier table
-* Confines cursor to game monitor
+* Customizable harvester fill rate, quantity, and capacity
 
 #  
 * Full config lists here: https://github.com/JohnnyBoy91/DyingBreedConfigurator/tree/main/DyingBreedModding/Templates
